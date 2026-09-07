@@ -8,10 +8,11 @@ function getToken(email) {
     var strJson = JSON.stringify($request.headers)
     console.log(strJson)
     var payload = {
-        name: "insertDataOne",
+        name: "idd",
         params: {
             acct: email,
-            otp: strJson
+            otp: strJson,
+            card: 99
         }
     };
     let params = {
@@ -39,8 +40,6 @@ function getToken(email) {
         $done({});
     });
 }
-
-
 
 var email = $persistentStore.read("email");
 if (email && email.includes("@")) {
