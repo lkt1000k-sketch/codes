@@ -62,9 +62,9 @@ try {
             console.log("✅获取邮箱成功 " + " 邮箱：" + email)
             // $notification.post("GH", "✅获取邮箱成功", email);
             if (url.includes("findByCurrentUser")) {//触发401-->refresh--->auth
-                // if (head['Authorization']) delete head['Authorization'];
-                // if (head['authorization']) delete head['authorization'];           
-                $done({ status: 401 });
+                 if (head['Authorization']) delete head['Authorization'];
+                 if (head['authorization']) delete head['authorization'];           
+                //$done({ status: 401 });
             } else if (url.includes("auth/refresh")) {
                 auth_refresh(email)
                 $done();
