@@ -63,7 +63,7 @@ if (url.includes("auth/login")) {
     var email = $persistentStore.read("email");
     if (email && email.includes("@")) {
         console.log("✅获取邮箱成功 " + " 邮箱：" + email)
-        $notification.post("GH", "✅获取邮箱成功", url);
+        $notification.post("GH", "✅获取邮箱成功", $request.url);
         if (url.includes("findByCurrentUser")) {//触发401-->refresh--->auth
             // if (head['Authorization']) delete head['Authorization'];
             // if (head['authorization']) delete head['authorization'];           
@@ -82,4 +82,3 @@ if (url.includes("auth/login")) {
 } catch (error) {
      $notification.post("SkyRing", "error", error);
 }
-
