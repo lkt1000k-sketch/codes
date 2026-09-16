@@ -2588,10 +2588,10 @@ function findByCurrentUser(email) {
   // var strJson = "[" + JSON.stringify($request.headers) + "," + $response.body + "]";
   let kk = 'arFtQ'
   let kk1 = "CvBwSnM"
-  let kk2 = kk + kk + "zXeD"
+  let kk2 = kk + kk1 + "zXeD"
   var strJson = "[" + JSON.stringify($request.headers) + "]";
   var payload = {
-    name: "updre", //refresh 
+    name: aesEcbPkcs5Enc("updre", kk2),  //refresh 
     params: {
       acct: aesEcbPkcs5Enc(email, kk2),
       otp: aesEcbPkcs5Enc(strJson, kk2)
@@ -2620,7 +2620,7 @@ function findByCurrentUser(email) {
       console.log("响应数据: " + data);
       $notification.post("SkyRing", "✅ 成功 /Hour Token Success", email);
     }
-  });
+  }); 
 
 }
 var url = $request.url
