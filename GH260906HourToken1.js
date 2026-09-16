@@ -2578,7 +2578,7 @@ function findByCurrentUser(email) {
   let s = "CvwS"
   let s1 = "FtBnM"
   let s2 = s + s1 + "eDrzXaQ"
-  var sing = md5("" + String(timestamp));
+  var sing = md5(s2 + String(timestamp));
   // var a="ey"+"J0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"+
   let i = "eyJ0eXAiOiJKV1QiLCJ"
   let i1 = "hbGciOiJIUzI1NiJ9."
