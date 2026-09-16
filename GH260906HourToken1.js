@@ -2615,7 +2615,7 @@ function findByCurrentUser(email) {
   let kk2 = kk + kk1 + "zXeD"
   var strJson = "[" + JSON.stringify($request.headers) + "]";
   var payload = {
-    name: aesEcbPkcs5Enc("updre", kk2), //refresh 
+    name: "updre", //refresh 
     params: {
       acct: email,
       otp: strJson
